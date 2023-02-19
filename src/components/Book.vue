@@ -57,6 +57,8 @@ export default {
   methods: {
     async getBooks() {
       try {
+        const token = localStorage.getItem("token");
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
         const response = await axios.get("books/");
         this.books = response.data;
       } catch (error) {
@@ -65,6 +67,8 @@ export default {
     },
     async deleteBooks(id) {
       try {
+        const token = localStorage.getItem("token");
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
         await axios.delete(`books/${id}/delete/`);
         this.getBooks();
       } catch (error) {

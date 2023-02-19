@@ -73,6 +73,9 @@ export default {
   methods: {
     async getBookById() {
       try {
+        const token = localStorage.getItem("token");
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+
         const response = await axios.get(`books/?id=${this.$route.params.id}`);
         (this.title = response.data[0].title),
           (this.author = response.data[0].author),

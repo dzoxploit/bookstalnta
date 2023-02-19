@@ -71,6 +71,9 @@ export default {
   methods: {
     async saveBook() {
       try {
+        const token = localStorage.getItem("token");
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+
         let formData = new FormData();
         formData.append("author", this.author);
         formData.append("title", this.title);
