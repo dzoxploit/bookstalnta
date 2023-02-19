@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 class="title">Add New Book</h1>
-    <form enctype="multipart/form-data" @submit.prevent="saveBook">
+    <h1 class="title">Update Book</h1>
+    <form enctype="multipart/form-data" @submit.prevent="updateBook">
       <div class="field">
         <label class="label">Author</label>
         <div class="control">
@@ -47,7 +47,7 @@
       </div>
       <div class="field">
         <div class="control">
-          <button class="button is-primary">Save</button>
+          <button class="button is-primary">Update</button>
         </div>
       </div>
     </form>
@@ -58,8 +58,7 @@
 import axios from "axios";
 
 export default {
-  name: "AddForm",
-
+  name: "EditForm",
   data() {
     return {
       title: "",
@@ -68,8 +67,21 @@ export default {
       selectedFile: null,
     };
   },
+  created() {
+    this.getBookById();
+  },
   methods: {
-    async saveBook() {
+    async getBookById() {
+      try {
+        const response = await axios.get(`books/?id=${this.$route.params.id}`);
+        (this.title = response.data[0].title),
+          (this.author = response.data[0].author),
+          (this.description = response.data[0].description);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async updateBook() {
       try {
         let formData = new FormData();
         formData.append("author", this.author);
@@ -77,7 +89,7 @@ export default {
         formData.append("description", this.description);
         formData.append("poster_image", this.selectedFile);
 
-        await axios.post("books/create/", formData);
+        await axios.post(`books/update/${this.$route.params.id}/`, formData);
         (this.title = ""), (this.author = ""), this.$router.push("/");
       } catch (error) {
         console.log(error);

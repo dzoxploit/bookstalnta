@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h1 class="title">Product List</h1>
+    <h1 class="title">Book List</h1>
+    <router-link :to="{ name: 'AddBook' }" class="button is-primary"
+      >Add New</router-link
+    >
     <table class="table is-striped is-fullwidth">
       <thead>
         <tr>
@@ -20,6 +23,11 @@
             <img v-bind:src="'http://localhost:8000' + book.poster_image" />
           </td>
           <td>
+             <router-link
+              :to="{ name: 'EditBook', params: { id: book.id } }"
+              class="button is-info is-small"
+              >Edit</router-link
+            >
             <button
               class="button is-danger is-small"
               @click="deleteBooks(book.id)"
